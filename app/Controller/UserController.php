@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class ProductController extends AbstractController
+class UserController extends AbstractController
 {
     public function index()
     {
@@ -23,21 +23,14 @@ class ProductController extends AbstractController
             [
                 "id" => 1,
                 "name" => "Product 1",
-                "price" => 100,
+                "linkedin" => "https://picsum.photos/200/300",
                 "description" => "Product 1 description",
                 "image" => "https://picsum.photos/200/300",
             ],
             [
                 "id" => 2,
                 "name" => "Product 2",
-                "price" => 100,
-                "description" => "Product 1 description",
-                "image" => "https://picsum.photos/200/300",
-            ],
-            [
-                "id" => 3,
-                "name" => "Product 3",
-                "price" => 100,
+                "linkedin" => "https://picsum.photos/200/300",
                 "description" => "Product 1 description",
                 "image" => "https://picsum.photos/200/300",
             ],
@@ -50,8 +43,7 @@ class ProductController extends AbstractController
 
         return [
             "id" => 1,
-            "name" => $user['name'],
-            "price" => 100,
+            "linkedin" => "https://picsum.photos/200/300",
             "description" => "Product 1 description",
             "image" => "https://picsum.photos/200/300",
             "token" => "token"
@@ -60,13 +52,11 @@ class ProductController extends AbstractController
 
     public function update()
     {
-        $user = $this->request->input('user', 'Hyperf');
-        $method = $this->request->getMethod();
+        $user = $this->request->all();
 
         return [
             "id" => 1,
-            "name" => "Product 1",
-            "price" => 100,
+            "linkedin" => "https://picsum.photos/200/300",
             "description" => "Product 1 description",
             "image" => "https://picsum.photos/200/300",
             "token" => "token"
@@ -75,13 +65,11 @@ class ProductController extends AbstractController
 
     public function del()
     {
-        $user = $this->request->input('user', 'Hyperf');
-        $method = $this->request->getMethod();
+        $user = $this->request->all();
 
         return [
             "id" => 1,
-            "name" => "Product 1",
-            "price" => 100,
+            "linkedin" => "https://picsum.photos/200/300",
             "description" => "Product 1 description",
             "image" => "https://picsum.photos/200/300",
             "token" => "token"

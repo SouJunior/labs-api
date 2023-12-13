@@ -12,16 +12,24 @@ declare(strict_types=1);
 
 namespace HyperfTest\Cases;
 
+use HyperfTest\HttpTestCase;
 use Hyperf\Testing\TestCase;
+use Hyperf\Testing\Client;
+
+use function Hyperf\Support\make;
 
 /**
  * @internal
  * @coversNothing
  */
-class ExampleTest extends TestCase
+class ExampleTest extends HttpTestCase
 {
     public function testExample()
     {
-        $this->get('/')->assertOk()->assertSee('Hyperf');
+        $res = $this->client->get('/');
+        $this->assertSame('GET', $res['method']);
+
+        $res = $this->client->request('get', '/products');
+        $this->assertSame(200, $res->getStatusCode());
     }
 }
