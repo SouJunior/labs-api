@@ -16,12 +16,6 @@ class LoginRepository implements LoginRepositoryInterface
     #[Value(key: "jwt_secret_key")]
     protected $jwtSecretKey;
 
-    public function __construct()
-    {
-        /* $this->jwtSecretKey = env('JWT_SECRET_KEY'); */
-        var_dump($this->jwtSecretKey);
-    }
-
     public function login($request)
     {
         $email = $request->input('email');
@@ -57,12 +51,14 @@ class LoginRepository implements LoginRepositoryInterface
     {
         $user = User::create([
             'uuid' => Uuid::uuid4()->toString(),
-            'name' => $request->input('name'), 
-            'email' => $request->input('email'), 
-            'birth_date' => $request->input('birth_date'), 
-            'document' => $request->input('document'), 
-            'cellphone' => $request->input('cellphone'), 
-            'password' => password_hash($request->input('password'), PASSWORD_BCRYPT), 
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'birth_date' => $request->input('birth_date'),
+            'document' => $request->input('document'),
+            'cellphone' => $request->input('cellphone'),
+            'linkedin' => $request->input('linkedin'),
+            'permission' => 'founder',
+            'password' => password_hash($request->input('password'), PASSWORD_BCRYPT),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -72,5 +68,4 @@ class LoginRepository implements LoginRepositoryInterface
         }
         return false;
     }
-
 }

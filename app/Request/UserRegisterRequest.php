@@ -21,6 +21,7 @@ class UserRegisterRequest extends FormRequest
             'birth_date' => 'required|date',
             'document' => 'required|string|max:20|unique:users',
             'cellphone' => 'required|string|max:20|unique:users',
+            'register_token' => 'required|string',
             'password' => 'required|string|min:8',
         ];
     }
@@ -47,6 +48,7 @@ class UserRegisterRequest extends FormRequest
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'O campo senha deve ter pelo menos :min caracteres.',
+            'register_token.required' => 'O campo register_token é obrigatório.',
         ];
     }
 

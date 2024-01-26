@@ -15,33 +15,59 @@ namespace App\Controller;
 use App\Model\User;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
+use App\Request\UserRegisterRequest;
+use App\Repositories\LoginRepository;
+use Hyperf\Config\Annotation\Value;
 
-class UserController extends AbstractController
+final class UserController extends AbstractController
 {
+    private $loginRepository;
+
+    #[Value(key: "register_token")]
+    private $registerToken;
+
+    public function __construct(
+        LoginRepository $loginRepository,
+    ) {
+        $this->loginRepository = $loginRepository;
+    }
+
     public function index()
     {
         return User::select(
             'uuid',
             'name',
             'email',
+            'birth_date',
+            'document',
+            'cellphone',
+            'linkedin',
             'created_at',
             'updated_at'
         )->get();
     }
 
-    /**
-     *
-     * @Todo
-     */
-    public function create()
+    public function create(UserRegisterRequest $request)
     {
-        return [
-            "id" => 1,
-            "linkedin" => "https://picsum.photos/200/300",
-            "description" => "Product 1 description",
-            "image" => "https://picsum.photos/200/300",
-            "token" => "token"
-        ];
+        $token = $this->request->input('register_token');
+
+        if ($token !== $this->registerToken) {
+            return $this->response->json([
+                'error' => 'Token inválido.',
+            ], 403);
+        }
+
+        $result = $this->loginRepository->register($request);
+
+        if ($result) {
+            return $this->response->json([
+                'message' => 'Usuário cadastrado com sucesso.'
+            ])->withStatus(201);
+        } else {
+            return $this->response->json([
+                'error' => 'Não foi possível realizar o cadastro.'
+            ])->withStatus(500);
+        }
     }
 
     public function update(RequestInterface $request, $id)

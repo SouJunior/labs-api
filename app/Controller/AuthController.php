@@ -18,34 +18,15 @@ use App\Repositories\LoginRepository;
 class AuthController extends AbstractController
 {
     private $loginRepository;
-    /* protected $response; */
 
     public function __construct(
         LoginRepository $loginRepository,
-        /* LoginRepositoryInterface $loginRepository, */
-        /* ResponseInterface $response */
     ) {
         $this->loginRepository = $loginRepository;
-        /* $this->response = $response; */
     }
 
     public function login(LoginRequest $request)
     {
         return $this->loginRepository->login($request);
-    }
-
-    public function register(UserRegisterRequest $request)
-    {
-        $result = $this->loginRepository->register($request);
-
-        if ($result) {
-            return $this->response->json([
-                'message' => 'Usuário cadastrado com sucesso.'
-            ])->withStatus(201);
-        } else {
-            return $this->response->json([
-                'error' => 'Não foi possível realizar o cadastro.'
-            ])->withStatus(500);
-        }
     }
 }

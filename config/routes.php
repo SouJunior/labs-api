@@ -19,7 +19,6 @@ Router::addGroup(
     function () {
         // user
         Router::addRoute(['GET'], '/users', 'App\Controller\UserController@index');
-        Router::addRoute(['POST'], '/user', 'App\Controller\UserController@create');
         Router::addRoute(['PUT'], '/user/{id}', 'App\Controller\UserController@update');
         Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
 
@@ -44,5 +43,5 @@ Router::get('/favicon.ico', function () {
 
 Router::addGroup('/api', function () {
     Router::post('/login', 'App\Controller\AuthController@login');
-    Router::post('/register', 'App\Controller\AuthController@register');
+    Router::addRoute(['POST'], '/user', 'App\Controller\UserController@create');
 });
