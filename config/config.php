@@ -30,4 +30,5 @@ return [
             LogLevel::WARNING,
         ],
     ],
+    'jwt_secret_key' => env('JWT_SECRET_KEY', 'Hyperf Skeleton'),
 ];
