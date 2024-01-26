@@ -24,7 +24,7 @@ class User extends Model
     /**
      * The table associated with the model.
      */
-    protected ?string $table = 'users';
+    protected ?string $table = 'hyperf.users';
 
     /**
      * The attributes that are mass assignable.
@@ -37,4 +37,6 @@ class User extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    /* protected ?string $connection = 'default'; */
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Hyperf\Swagger\Annotation as SA;
+use function Hyperf\Support\env;
 
 #[SA\HyperfServer(name: 'http')]
 class IndexController extends AbstractController
@@ -32,6 +33,7 @@ class IndexController extends AbstractController
         return [
             'method' => $method,
             'message' => "Hello bro, {$user}.",
+            'env' => env('DB_DATABASE'),
         ];
     }
 }
