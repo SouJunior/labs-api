@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types=1);
 /**
  * This file is part of Hyperf.
  *
@@ -9,6 +8,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
+declare(strict_types=1);
+
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
@@ -22,17 +24,19 @@ Router::addGroup(
         Router::addRoute(['PUT'], '/user/{id}', 'App\Controller\UserController@update');
         Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
 
-        // Squad
-        Router::addRoute(['GET', 'HEAD'], '/squads', 'App\Controller\SquadController@index');
-        Router::addRoute(['POST'], '/squad', 'App\Controller\SquadController@create');
-        Router::addRoute(['PUT'], '/squad', 'App\Controller\SquadController@update');
-        Router::addRoute(['DELETE'], '/squad', 'App\Controller\SquadController@del');
-
         // Product
-        Router::addRoute(['GET'], '/products', 'App\Controller\ProductController@index');
-        Router::addRoute(['POST'], '/product', 'App\Controller\ProductController@create');
-        Router::addRoute(['PUT'], '/product', 'App\Controller\ProductController@update');
-        Router::addRoute(['DELETE'], '/product', 'App\Controller\ProductController@del');
+        Router::addRoute(['GET'], '/products', 'App\Controller\Product@index');
+        Router::addRoute(['GET'], '/product/{uuid}', 'App\Controller\Product@show');
+        Router::addRoute(['POST'], '/product', 'App\Controller\Product@create');
+        Router::addRoute(['PUT'], '/product/{uuid}', 'App\Controller\Product@update');
+        Router::addRoute(['DELETE'], '/product/{uuid}', 'App\Controller\Product@delete');
+
+        // Squad
+        Router::addRoute(['GET'], '/squads', 'App\Controller\SquadController@index');
+        Router::addRoute(['GET'], '/squad/{uuid}', 'App\Controller\SquadController@show');
+        Router::addRoute(['POST'], '/squad', 'App\Controller\SquadController@create');
+        Router::addRoute(['PUT'], '/squad/{uuid}', 'App\Controller\SquadController@update');
+        Router::addRoute(['DELETE'], '/squad', 'App\Controller\SquadController@delete');
     },
     ['middleware' => [App\Middleware\AuthMiddleware::class]]
 );

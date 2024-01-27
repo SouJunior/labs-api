@@ -1,85 +1,84 @@
 <?php
 
-declare(strict_types=1);
 /**
  * This file is part of Hyperf.
  *
- * @link     https://www.hyperf.io
+ * @see     https://www.hyperf.io
  * @document https://hyperf.wiki
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
+declare(strict_types=1);
+
 namespace App\Controller;
+
+use App\Model\Squad;
+use Ramsey\Uuid\Uuid;
+use Hyperf\HttpServer\Contract\RequestInterface;
+use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
 
 class SquadController extends AbstractController
 {
-    public function index()
+    public function index(): Psr7ResponseInterface
     {
-        $user = $this->request->input('user', 'Hyperf');
-        $method = $this->request->getMethod();
-
-        return [
-            [
-                "id" => 1,
-                "name" => "Product 1",
-                "price" => 100,
-                "description" => "Product 1 description",
-                "image" => "https://picsum.photos/200/300",
-            ],
-            [
-                "id" => 2,
-                "name" => "Product 2",
-                "price" => 100,
-                "description" => "Product 1 description",
-                "image" => "https://picsum.photos/200/300",
-            ],
-            [
-                "id" => 3,
-                "name" => "Product 3",
-                "price" => 100,
-                "description" => "Product 1 description",
-                "image" => "https://picsum.photos/200/300",
-            ],
-        ];
+        $squad = Squad::all();
+        return $this->response->json($squad);
     }
 
-    public function create()
+    public function show($uuid): Psr7ResponseInterface
     {
-        $user = $this->request->all();
+        $squad = Squad::where('uuid', $uuid)->first();
 
-        return [
-            "id" => 1,
-            "price" => 100,
-            "description" => "Product 1 description",
-            "image" => "https://picsum.photos/200/300",
-            "token" => "token"
-        ];
+        if (! $squad) {
+            return $this->response->json(['error' => 'Squad not found'], 404);
+        }
+
+        return $this->response->json($squad);
     }
 
-    public function update()
+    public function create(): Psr7ResponseInterface
     {
-        $user = $this->request->all();
+        $data = $this->request->getParsedBody();
+        $squad = new Squad();
+        $squad->fill($data);
+        $squad->uuid = Uuid::uuid4()->toString();
+        $squad->save();
 
-        return [
-            "id" => 1,
-            "price" => 100,
-            "description" => "Product 1 description",
-            "image" => "https://picsum.photos/200/300",
-            "token" => "token"
-        ];
+        return $this->response->json([
+            'message' => 'Squad created successfully!',
+            'squad' => $squad,
+        ]);
+    }
+
+    public function update($uuid): Psr7ResponseInterface
+    {
+        $squad = Squad::find($uuid);
+
+        if (! $squad) {
+            return $this->response->json(['error' => 'Squad not found'], 404);
+        }
+
+        $data = $this->request->getParsedBody();
+        $squad->fill($data);
+        $squad->save();
+
+        return $this->response->json([
+            'message' => 'Squad updated successfully!',
+            'squad' => $squad,
+        ]);
     }
 
     public function del()
     {
-        $user = $this->request->all();
+        $squad = Squad::find($id);
 
-        return [
-            "id" => 1,
-            "price" => 100,
-            "description" => "Product 1 description",
-            "image" => "https://picsum.photos/200/300",
-            "token" => "token"
-        ];
+        if (! $squad) {
+            return $this->response->json(['error' => 'Squad not found'], 404);
+        }
+
+        $squad->delete();
+
+        return $this->response->json(['message' => 'Squad deleted successfully!']);
     }
 }

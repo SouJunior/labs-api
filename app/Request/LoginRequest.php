@@ -1,22 +1,37 @@
 <?php
 
+/**
+ * This file is part of Hyperf.
+ *
+ * @see     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 declare(strict_types=1);
+
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Request;
 
 use Hyperf\Validation\Request\FormRequest;
-use Hyperf\Validation\ValidationException;
-use Hyperf\Validation\Validator;
 
-class LoginRequest extends FormRequest
-/* class LoginRequest */
+class LoginRequest extends FormRequest /* class LoginRequest */
 {
     public function authorize()
     {
         return true;
     }
 
-    public function rules():array
+    public function rules(): array
     {
         return [
             'email' => 'required|email',
@@ -24,7 +39,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function messages():array
+    public function messages(): array
     {
         return [
             'email.required' => 'O campo e-mail é obrigatório.',
@@ -33,5 +48,4 @@ class LoginRequest extends FormRequest
             'password' => 'required|string|min:8',
         ];
     }
-
 }
