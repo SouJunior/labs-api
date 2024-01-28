@@ -19,6 +19,8 @@ class CreateSquadsTable extends Migration
             $table->text('description')->nullable();
             $table->datetimes();
 
+            $table->index('uuid');
+
             $table->foreign('product_uuid')->references('uuid')->on('products')->onDelete('set null');
         });
     }

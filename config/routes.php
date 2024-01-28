@@ -37,6 +37,13 @@ Router::addGroup(
         Router::addRoute(['POST'], '/squad', 'App\Controller\SquadController@create');
         Router::addRoute(['PUT'], '/squad/{uuid}', 'App\Controller\SquadController@update');
         Router::addRoute(['DELETE'], '/squad', 'App\Controller\SquadController@delete');
+
+        // Squad
+        Router::addRoute(['GET'], '/squad/{uuid}/members', 'App\Controller\Member@index');
+        Router::addRoute(['GET'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@show');
+        Router::addRoute(['POST'], '/squad/{uuid}/member', 'App\Controller\Member@create');
+        Router::addRoute(['PUT'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@update');
+        Router::addRoute(['DELETE'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@delete');
     },
     ['middleware' => [App\Middleware\AuthMiddleware::class]]
 );
