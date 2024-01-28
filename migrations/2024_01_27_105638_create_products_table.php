@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->datetimes();
 
             $table->index('uuid');
+            $table->index('owner_uuid');
 
             $table->foreign('owner_uuid')->references('uuid')->on('users')->onDelete('set null');
         });

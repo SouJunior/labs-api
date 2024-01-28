@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('document', 20)->unique();
             $table->string('cellphone', 20)->unique();
             $table->string('password');
+            $table->string('linkedin')->nullable();
+            $table->string('permission')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
