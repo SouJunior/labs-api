@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->uuid('owner_uuid')->nullable();
             $table->string('name');
             $table->text('description');
+            $table->integer('active')->nullable()->default(1);
             $table->datetimes();
 
             $table->index('uuid');

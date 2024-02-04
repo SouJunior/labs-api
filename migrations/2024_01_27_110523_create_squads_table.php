@@ -6,9 +6,6 @@ use Hyperf\Database\Migrations\Migration;
 
 class CreateSquadsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('squads', function (Blueprint $table) {
@@ -17,6 +14,7 @@ class CreateSquadsTable extends Migration
             $table->uuid('product_uuid')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->integer('active')->nullable()->default(1);
             $table->datetimes();
 
             $table->index('uuid');
@@ -25,9 +23,6 @@ class CreateSquadsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('squads');

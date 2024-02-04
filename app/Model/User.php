@@ -33,6 +33,7 @@ class User extends Model
 
     protected array $guarded = [];
 
+    protected array $hidden = ['password', 'email', 'id', 'remember_token'];
     /**
      * The attributes that should be cast to native types.
      */

@@ -13,17 +13,17 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\User;
+use App\Repositories\LoginRepository;
+use App\Request\UserRegisterRequest;
+use Hyperf\Config\Annotation\Value;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
-use App\Request\UserRegisterRequest;
-use App\Repositories\LoginRepository;
-use Hyperf\Config\Annotation\Value;
 
 final class UserController extends AbstractController
 {
     private $loginRepository;
 
-    #[Value(key: "register_token")]
+    #[Value(key: 'register_token')]
     private $registerToken;
 
     public function __construct(
@@ -37,10 +37,6 @@ final class UserController extends AbstractController
         return User::select(
             'uuid',
             'name',
-            'email',
-            'birth_date',
-            'document',
-            'cellphone',
             'linkedin',
             'created_at',
             'updated_at'
@@ -61,30 +57,17 @@ final class UserController extends AbstractController
 
         if ($result) {
             return $this->response->json([
-                'message' => 'Usuário cadastrado com sucesso.'
+                'message' => 'Usuário cadastrado com sucesso.',
             ])->withStatus(201);
-        } else {
-            return $this->response->json([
-                'error' => 'Não foi possível realizar o cadastro.'
-            ])->withStatus(500);
         }
+
+        return $this->response->json([
+            'error' => 'Não foi possível realizar o cadastro.',
+        ])->withStatus(500);
     }
 
     public function update(RequestInterface $request, $id)
     {
-        if ($user->uuid !== $id) {
-            return $this->response->json([
-                'error' => 'Você não tem permissão para autalizar este usuário.',
-            ], 403);
-        }
-
-        $email = $this->request->input('email');
-        $name = $this->request->input('name');
-        $password = $this->request->input('password');
-        $birthDate = $this->request->input('birth_date');
-        $document = $this->request->input('document');
-        $cellphone = $this->request->input('cellphone');
-
         $user = User::query()->where('uuid', $id)->first();
 
         if (empty($user)) {
@@ -93,11 +76,23 @@ final class UserController extends AbstractController
             ], 404);
         }
 
+        if ($user->uuid !== $id) {
+            return $this->response->json([
+                'error' => 'Você não tem permissão para autalizar este usuário.',
+            ], 403);
+        }
+
+        $email = $this->request->input('email');
+        $name = $this->request->input('name');
+        $linkedin = $this->request->input('linkedin');
+        $password = $this->request->input('password');
+
+
         $user->name = $name;
+        $user->email = $email;
         $user->password = password_hash($password, PASSWORD_BCRYPT); // Hash da senha
-        $user->birth_date = $birthDate;
-        $user->document = $document;
-        $user->cellphone = $cellphone;
+        $user->linkedin = $linkedin;
+
         $user->save();
 
         return $this->response->json([
@@ -116,7 +111,7 @@ final class UserController extends AbstractController
             ], 403);
         }
 
-        if (!$id) {
+        if (! $id) {
             return $this->response->json([
                 'error' => 'O email é necessário para deletar o usuário.',
             ], 400);
@@ -124,7 +119,7 @@ final class UserController extends AbstractController
 
         $user = User::query()->where('uuid', $id)->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->response->json([
                 'error' => 'Usuário não encontrado.',
             ], 404);

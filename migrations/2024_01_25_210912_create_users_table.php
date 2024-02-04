@@ -6,9 +6,6 @@ use Hyperf\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -16,12 +13,10 @@ class CreateUsersTable extends Migration
             $table->uuid('uuid');
             $table->string('name', 60);
             $table->string('email', 60)->unique();
-            $table->date('birth_date');
-            $table->string('document', 20)->unique();
-            $table->string('cellphone', 20)->unique();
             $table->string('password');
             $table->string('linkedin')->nullable();
             $table->string('permission')->nullable();
+            $table->integer('active')->nullable()->default(1);
             $table->rememberToken();
             $table->timestamps();
 
@@ -29,9 +24,6 @@ class CreateUsersTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
