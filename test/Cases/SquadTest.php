@@ -14,7 +14,7 @@ class SquadTest extends HttpTestCase
 {
     public function testIndex()
     {
-        $res = $this->request('get', '/squads');
+        $res = $this->request('get', '/api/squads');
         $this->assertSame(200, $res->getStatusCode());
     }
 }

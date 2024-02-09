@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
 use Hyperf\Utils\Str;
 use Hyperf\Config\Annotation\Value;
+use Hyperf\Config\Config;
 
 class LoginRepository implements LoginRepositoryInterface
 {

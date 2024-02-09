@@ -14,7 +14,7 @@ class ProductTest extends HttpTestCase
 {
     public function testIndex()
     {
-        $res = $this->request('get', '/products');
+        $res = $this->request('get', '/api/products');
         $this->assertSame(200, $res->getStatusCode());
     }
 }
