@@ -32,6 +32,7 @@ class LoginRepository implements LoginRepositoryInterface
             $tokenPayload = [
                 'uuid' => $user->uuid,
                 'email' => $user->email,
+                'name' => $user->name,
                 'iat' => time(),
             ];
 

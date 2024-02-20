@@ -20,9 +20,15 @@ use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
 
 class SquadController extends AbstractController
 {
-    public function index(): Psr7ResponseInterface
+    public function index($productUuid = false): Psr7ResponseInterface
     {
-        $squad = Squad::all();
+        var_dump($productUuid);
+        if (empty($productUuid) === false) {
+            $squad = Squad::where('product_uuid', $productUuid)->get();
+        } else {
+            $squad = Squad::all();
+        }
+
         return $this->response->json($squad);
     }
 

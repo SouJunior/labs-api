@@ -25,14 +25,14 @@ Router::addGroup(
         Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
 
         // Product
-        Router::addRoute(['GET'], '/products', 'App\Controller\Product@index');
+        Router::addRoute(['GET'], '/products/[{userUuid}]', 'App\Controller\Product@index');
         Router::addRoute(['GET'], '/product/{uuid}', 'App\Controller\Product@show');
         Router::addRoute(['POST'], '/product', 'App\Controller\Product@create');
         Router::addRoute(['PUT'], '/product/{uuid}', 'App\Controller\Product@update');
         Router::addRoute(['DELETE'], '/product/{uuid}', 'App\Controller\Product@delete');
 
         // Squad
-        Router::addRoute(['GET'], '/squads', 'App\Controller\SquadController@index');
+        Router::addRoute(['GET'], '/squads/[{productUuid}]', 'App\Controller\SquadController@index');
         Router::addRoute(['GET'], '/squad/{uuid}', 'App\Controller\SquadController@show');
         Router::addRoute(['POST'], '/squad', 'App\Controller\SquadController@create');
         Router::addRoute(['PUT'], '/squad/{uuid}', 'App\Controller\SquadController@update');

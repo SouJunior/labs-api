@@ -20,9 +20,14 @@ use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
 
 final class Product extends AbstractController
 {
-    public function index(): Psr7ResponseInterface
+    public function index($userUuid = false): Psr7ResponseInterface
     {
-        $products = ProductModel::all();
+        if (empty($userUuid) === false) {
+            $products = ProductModel::where('owner_uuid', $userUuid)->get();
+        } else {
+            $products = ProductModel::all();
+        }
+
         return $this->response->json($products);
     }
 
