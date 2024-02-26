@@ -10,13 +10,20 @@
  */
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Controller;
 
 use App\Model\Product as ProductModel;
-use Ramsey\Uuid\Uuid;
-use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
+use Ramsey\Uuid\Uuid;
 
 final class Product extends AbstractController
 {
@@ -33,12 +40,10 @@ final class Product extends AbstractController
 
     public function create()
     {
-
         $user = $this->container->get('user');
 
         $name = $this->request->input('name');
         $description = $this->request->input('description');
-        $squadId = $this->request->input('squad_id');
 
         $product = new ProductModel();
 
@@ -67,10 +72,21 @@ final class Product extends AbstractController
 
     public function update($uuid): Psr7ResponseInterface
     {
+        $user = $this->container->get('user');
+
         $product = ProductModel::where('uuid', $uuid)->first();
 
         if (! $product) {
             return $this->response->json(['error' => 'Product not found'], 404);
+        }
+
+        if ($user->uuid !== $product->owner_uuid) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
         }
 
         $name = $this->request->input('name');
@@ -89,14 +105,25 @@ final class Product extends AbstractController
     /**
      * Delete a product.
      * @RequestMapping(path="delete/{id}", methods="post")
-     * @param mixed $id
+     * @param mixed $uuid
      */
     public function delete($uuid): Psr7ResponseInterface
     {
         $product = ProductModel::where('uuid', $uuid)->first();
 
+        $user = $this->container->get('user');
+
         if (! $product) {
             return $this->response->json(['error' => 'Product not found'], 404);
+        }
+
+        if ($user->uuid !== $product->owner_uuid) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
         }
 
         $product->delete();
