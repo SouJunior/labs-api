@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Squad;
+use App\Model\Product;
 use Ramsey\Uuid\Uuid;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
@@ -22,7 +23,6 @@ class SquadController extends AbstractController
 {
     public function index($productUuid = false): Psr7ResponseInterface
     {
-        var_dump($productUuid);
         if (empty($productUuid) === false) {
             $squad = Squad::where('product_uuid', $productUuid)->get();
         } else {
@@ -59,14 +59,33 @@ class SquadController extends AbstractController
 
     public function update($uuid): Psr7ResponseInterface
     {
-        $squad = Squad::find($uuid);
+        $user = $this->container->get('user');
+
+        $squad = Squad::where('uuid', $uuid)->first();
 
         if (! $squad) {
             return $this->response->json(['error' => 'Squad not found'], 404);
         }
 
+        $product = Product::where('uuid', $squad->product_uuid)->first();
+
+        if (! $product) {
+            return $this->response->json(['error' => 'Product not found'], 404);
+        }
+
+        if ($user->uuid !== $product->owner_uuid) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
+        }
+
         $data = $this->request->getParsedBody();
-        $squad->fill($data);
+
+        $squad->name = $data['name'];
+        $squad->description = $data['description'];
         $squad->save();
 
         return $this->response->json([
@@ -75,12 +94,29 @@ class SquadController extends AbstractController
         ]);
     }
 
-    public function del()
+    public function delete($uuid)
     {
-        $squad = Squad::find($id);
+        $user = $this->container->get('user');
+
+        $squad = Squad::where('uuid', $uuid)->first();
 
         if (! $squad) {
             return $this->response->json(['error' => 'Squad not found'], 404);
+        }
+
+        $product = Product::where('uuid', $squad->product_uuid)->first();
+
+        if (! $product) {
+            return $this->response->json(['error' => 'Product not found'], 404);
+        }
+
+        if ($user->uuid !== $product->owner_uuid) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
         }
 
         $squad->delete();

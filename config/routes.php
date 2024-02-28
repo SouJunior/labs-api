@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of Hyperf.
- *
- * @link     https://www.hyperf.io
- * @document https://hyperf.wiki
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
- */
-
 declare(strict_types=1);
 
 use Hyperf\HttpServer\Router\Router;
@@ -36,9 +27,9 @@ Router::addGroup(
         Router::addRoute(['GET'], '/squad/{uuid}', 'App\Controller\SquadController@show');
         Router::addRoute(['POST'], '/squad', 'App\Controller\SquadController@create');
         Router::addRoute(['PUT'], '/squad/{uuid}', 'App\Controller\SquadController@update');
-        Router::addRoute(['DELETE'], '/squad', 'App\Controller\SquadController@delete');
+        Router::addRoute(['DELETE'], '/squad/{uuid}', 'App\Controller\SquadController@delete');
 
-        // Squad
+        // Member
         Router::addRoute(['GET'], '/squad/{uuid}/members', 'App\Controller\Member@index');
         Router::addRoute(['GET'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@show');
         Router::addRoute(['POST'], '/squad/{uuid}/member', 'App\Controller\Member@create');
