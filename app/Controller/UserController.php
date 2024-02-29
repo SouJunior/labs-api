@@ -87,11 +87,13 @@ final class UserController extends AbstractController
         $linkedin = $this->request->input('linkedin');
         $password = $this->request->input('password');
 
-
         $user->name = $name;
         $user->email = $email;
-        $user->password = password_hash($password, PASSWORD_BCRYPT); // Hash da senha
         $user->linkedin = $linkedin;
+
+        if ($password) {
+            $user->password = password_hash($password, PASSWORD_BCRYPT);
+        }
 
         $user->save();
 

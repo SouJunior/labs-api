@@ -19,7 +19,7 @@ class CreateSquadsTable extends Migration
 
             $table->index('uuid');
 
-            $table->foreign('product_uuid')->references('uuid')->on('products')->onDelete('set null');
+            $table->foreign('product_uuid')->references('uuid')->on('products')->onDelete('cascade');
         });
     }
 
