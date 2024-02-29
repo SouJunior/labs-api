@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Hyperf\Support\env;
+
 return [
     /*
      * The allowed_methods and allowed_headers options are case-insensitive.
@@ -30,7 +32,8 @@ return [
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['*'],
+    /* 'allowed_origins' => ['*'], */
+    'allowed_origins' => [env('ALLOWED_ORIGINS', 'Hyperf Skeleton')],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
