@@ -130,4 +130,29 @@ final class Product extends AbstractController
 
         return $this->response->json(['message' => 'Product deleted successfully!']);
     }
+
+    public function active($uuid): Psr7ResponseInterface
+    {
+        $user = $this->container->get('user');
+
+        if (in_array('admin', $user->permission) === false) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
+        }
+
+        $product = ProductModel::where('uuid', $uuid)->first();
+
+        if (! $product) {
+            return $this->response->json(['error' => 'Product not found'], 404);
+        }
+
+        $product->active = $this->request->input('active');
+        $product->save();
+
+        return $this->response->json(['message' => 'Produto ativado com sucesso!']);
+    }
 }

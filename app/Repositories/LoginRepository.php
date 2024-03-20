@@ -33,6 +33,7 @@ class LoginRepository implements LoginRepositoryInterface
                 'uuid' => $user->uuid,
                 'email' => $user->email,
                 'name' => $user->name,
+                'permission' => unserialize($user->permission),
                 'iat' => time(),
             ];
 

@@ -14,13 +14,14 @@ Router::addGroup(
         Router::addRoute(['GET'], '/users', 'App\Controller\UserController@index');
         Router::addRoute(['PUT'], '/user/{id}', 'App\Controller\UserController@update');
         Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
+        Router::addRoute(['POST'], '/user/permission/{uuid}', 'App\Controller\UserController@permission');
 
         // Product
-        Router::addRoute(['GET'], '/products/[{userUuid}]', 'App\Controller\Product@index');
         Router::addRoute(['GET'], '/product/{uuid}', 'App\Controller\Product@show');
         Router::addRoute(['POST'], '/product', 'App\Controller\Product@create');
         Router::addRoute(['PUT'], '/product/{uuid}', 'App\Controller\Product@update');
         Router::addRoute(['DELETE'], '/product/{uuid}', 'App\Controller\Product@delete');
+        Router::addRoute(['POST'], '/product/active/{uuid}', 'App\Controller\Product@active');
 
         // Squad
         Router::addRoute(['GET'], '/squads/[{productUuid}]', 'App\Controller\SquadController@index');
@@ -46,4 +47,5 @@ Router::get('/favicon.ico', function () {
 Router::addGroup('/api', function () {
     Router::post('/login', 'App\Controller\AuthController@login');
     Router::addRoute(['POST'], '/user', 'App\Controller\UserController@create');
+    Router::addRoute(['GET'], '/products/[{userUuid}]', 'App\Controller\Product@index');
 });

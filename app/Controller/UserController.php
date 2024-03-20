@@ -133,4 +133,35 @@ final class UserController extends AbstractController
             'message' => 'Usuário deletado com sucesso!',
         ]);
     }
+
+    public function permission(RequestInterface $request, $uuid)
+    {
+        $user = User::query()->where('uuid', $uuid)->first();
+
+        if (empty($user)) {
+            return $this->response->json([
+                'error' => 'Usuário não encontrado.',
+            ], 404);
+        }
+
+        if (in_array('admin', unserialize($user->permission)) === false) {
+            return $this->response->json(
+                [
+                    'error' => 'Você não tem permissão para autalizar este produto.',
+                ],
+                403
+            );
+        }
+
+        $permission = $this->request->input('permission');
+
+        $user->permission = serialize($permission);
+
+        $user->save();
+
+        return $this->response->json([
+            'message' => 'Usuário atualizado com sucesso!',
+            'user' => $user,
+        ]);
+    }
 }
