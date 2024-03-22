@@ -1,22 +1,27 @@
 version: '3'
 services:
   hyperf-skeleton:
-    container_name: hyperf-skeleton
-    image: hyperf-skeleton
+    container_name: labs-api 
+    image: labs-api
     build:
       context: .
     volumes:
       - ./:/opt/www
+      - /opt/www/vendor
     ports:
       - 9501:9501
       - 9500:9500
     environment:
       - APP_ENV=dev
       - SCAN_CACHEABLE=false
-    entrypoint: ["php", "/opt/www/bin/hyperf.php", "server:watch"]
+    # entrypoint: ["php", "/opt/www/bin/hyperf.php", "server:watch"]
+    entrypoint: ["/opt/www/docker/entrypoint.sh"]
+    depends_on:
+      db-labs:
+        condition: service_healthy
 
-  db:
-    container_name: mysql8
+  db-labs:
+    container_name: db-labs
     image: mysql:8.3
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
@@ -28,6 +33,10 @@ services:
       - './docker/db/data:/var/lib/mysql'
       - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
       - './docker/db/sql:/docker-entrypoint-initdb.d'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 networks:
   default:

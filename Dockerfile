@@ -1,9 +1,16 @@
-# Default Dockerfile
-#
-# @link     https://www.hyperf.io
-# @document https://hyperf.wiki
-# @contact  group@hyperf.io
-# @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+FROM composer:2.7 as vendor
+ 
+COPY . /app
+ 
+COPY composer.json composer.json
+COPY composer.lock composer.lock
+ 
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist
 
 FROM hyperf/hyperf:8.1-alpine-v3.18-swoole
 LABEL maintainer="Hyperf Developers <group@hyperf.io>" version="1.0" license="MIT" app.name="Hyperf"
@@ -42,12 +49,9 @@ RUN set -ex \
 
 WORKDIR /opt/www
 
-# Composer Cache
-# COPY ./composer.* /opt/www/
-# RUN composer install --no-dev --no-scripts
-
 COPY . /opt/www
-RUN composer install --no-dev -o && php bin/hyperf.php
+
+COPY --from=vendor /app/vendor/ /opt/www/vendor/
 
 EXPOSE 9501
 
