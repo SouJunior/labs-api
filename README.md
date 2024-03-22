@@ -11,6 +11,12 @@ Entrar na pasta
 cd labs-api/
 ```
 
+Envs para ambiente de desenvolvimento
+``` sh
+cd .env.example .env
+```
+
+
 Subir o servidor
 ```
 docker compose up --build
