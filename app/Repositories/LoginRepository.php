@@ -55,6 +55,9 @@ class LoginRepository implements LoginRepositoryInterface
         $user = User::create([
             'uuid' => Uuid::uuid4()->toString(),
             'name' => $request->input('name'),
+            'cidade' => $request->input('cidade'),
+            'estado' => $request->input('estado'),
+            'discord' => $request->input('discord'),
             'email' => $request->input('email'),
             'linkedin' => $request->input('linkedin'),
             'permission' => serialize(['founder']),
