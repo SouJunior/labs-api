@@ -33,11 +33,14 @@ final class UserController extends AbstractController
     }
 
     public function index()
-    {
+    {        
         return User::select(
             'uuid',
             'name',
+            'cidade',
+            'estado',
             'linkedin',
+            'discord',
             'created_at',
             'updated_at'
         )->get();
@@ -84,12 +87,18 @@ final class UserController extends AbstractController
 
         $email = $this->request->input('email');
         $name = $this->request->input('name');
+        $cidade = $this->request->input('cidade');
+        $estado = $this->request->input('estado');
         $linkedin = $this->request->input('linkedin');
+        $discord = $this->request->input('discord');
         $password = $this->request->input('password');
 
         $user->name = $name;
         $user->email = $email;
         $user->linkedin = $linkedin;
+        $user->cidade = $cidade;
+        $user->estado = $estado;
+        $user->discord = $discord;
 
         if ($password) {
             $user->password = password_hash($password, PASSWORD_BCRYPT);
