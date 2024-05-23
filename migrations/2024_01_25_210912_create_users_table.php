@@ -14,11 +14,8 @@ class CreateUsersTable extends Migration
             $table->string('name', 60);
             $table->string('email', 60)->unique();
             $table->string('password');
-            $table->string('cidade', 32);
-            $table->string('estado', 20);
-            $table->string('discord',30)->nullable();
-            $table->string('linkedin',60)->nullable();
-            $table->string('permission',20)->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('permission')->nullable();
             $table->integer('active')->nullable()->default(1);
             $table->rememberToken();
             $table->timestamps();
