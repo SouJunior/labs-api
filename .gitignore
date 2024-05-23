@@ -12,3 +12,6 @@ vendor/
 .phpunit*
 *.cache
 .vscode/
+docker/
+docker-compose.yml
+docker-compose1.yml

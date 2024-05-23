@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('permission')->nullable();
             $table->integer('active')->nullable()->default(1);
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamps();            
 
             $table->index('uuid');
         });
