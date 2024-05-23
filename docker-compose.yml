@@ -16,6 +16,7 @@ services:
       - SCAN_CACHEABLE=false
     entrypoint: [ "php", "/opt/www/bin/hyperf.php", "server:watch" ]
     #entrypoint: ["/opt/www/docker/entrypoint.sh"]
+
     networks:
       - hyperf-skeleton-network
 
