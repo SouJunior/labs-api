@@ -14,11 +14,11 @@ services:
     environment:
       - APP_ENV=dev
       - SCAN_CACHEABLE=false
-    # entrypoint: ["php", "/opt/www/bin/hyperf.php", "server:watch"]
-    entrypoint: [ "/opt/www/docker/entrypoint.sh" ]
-    depends_on:
-      db-labs:
-        condition: service_healthy
+    entrypoint: [ "php", "/opt/www/bin/hyperf.php", "server:watch" ]
+    #entrypoint: ["/opt/www/docker/entrypoint.sh"]
+
+    networks:
+      - hyperf-skeleton-network
 
   db-labs:
     container_name: db-labs
@@ -37,7 +37,9 @@ services:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
+    networks:
+      - hyperf-skeleton-network
 
 networks:
-  default:
-    name: hyperf-skeleton
+  hyperf-skeleton-network:
+    driver: bridge
