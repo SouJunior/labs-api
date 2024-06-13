@@ -28,6 +28,9 @@ class UserRegisterRequest extends FormRequest
             'name' => 'required|string|max:60',
             'email' => 'required|email|unique:users',
             'linkedin' => 'required',
+            'cidade' => 'required',
+            'estado' => 'required',
+            'discord' => 'required',
             'password' => 'required|min:8',
             'register_token' => 'required|string',
         ];
@@ -47,6 +50,9 @@ class UserRegisterRequest extends FormRequest
             'password.min' => 'O campo senha deve ter pelo menos :min caracteres.',
             'register_token.required' => 'O campo register_token é obrigatório.',
             'linkedin.required' => 'O campo Linkedin é obrigatório.',
+            'cidade.required' => 'O campo cidade é obrigatório.',
+            'estado.required' => 'O campo estado é obrigatório.',
+            'discord.required' => 'O campo discord é obrigatório.',
         ];
     }
 }
