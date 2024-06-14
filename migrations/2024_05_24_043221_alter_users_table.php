@@ -11,7 +11,7 @@ class AlterUsersTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->string('cidade', 255)->after('remember_token');
             $table->string('estado', 255)->after('cidade');
             $table->string('discord',255)->after('estado')->nullable();
@@ -23,7 +23,7 @@ class AlterUsersTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('cidade');
             $table->dropColumn('estado');
             $table->dropColumn('discord');
