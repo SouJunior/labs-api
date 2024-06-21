@@ -1,11 +1,18 @@
 <?php
 
 declare(strict_types=1);
-
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+use App\Middleware\AuthMiddleware;
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD', 'OPTIONS'], '/', 'App\Controller\IndexController@index');
-
 
 Router::addGroup(
     '/api',
@@ -37,7 +44,7 @@ Router::addGroup(
         Router::addRoute(['PUT'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@update');
         Router::addRoute(['DELETE'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@delete');
     },
-    ['middleware' => [App\Middleware\AuthMiddleware::class]]
+    ['middleware' => [AuthMiddleware::class]]
 );
 
 Router::get('/favicon.ico', function () {

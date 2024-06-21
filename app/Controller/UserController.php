@@ -33,13 +33,15 @@ final class UserController extends AbstractController
     }
 
     public function index()
-    {        
+    {
         return User::select(
             'uuid',
             'name',
             'cidade',
             'estado',
             'linkedin',
+            'user_type',
+            'permissions',
             'discord',
             'created_at',
             'updated_at'
@@ -81,7 +83,7 @@ final class UserController extends AbstractController
 
         if ($user->uuid !== $id) {
             return $this->response->json([
-                'error' => 'Você não tem permissão para autalizar este usuário.',
+                'error' => 'Você não tem permissão para atualizar este usuário.',
             ], 403);
         }
 
@@ -143,6 +145,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    // user type - modificar
     public function permission(RequestInterface $request, $uuid)
     {
         $user = User::query()->where('uuid', $uuid)->first();
@@ -156,7 +159,7 @@ final class UserController extends AbstractController
         if (in_array('admin', unserialize($user->permission)) === false) {
             return $this->response->json(
                 [
-                    'error' => 'Você não tem permissão para autalizar este produto.',
+                    'error' => 'Você não tem permissão para atualizar este produto.',
                 ],
                 403
             );
