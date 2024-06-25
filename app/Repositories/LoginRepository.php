@@ -1,21 +1,31 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace App\Repositories;
 
 use App\Interfaces\LoginRepositoryInterface;
 use App\Model\User;
-use App\Request\LoginRequest;
-use Firebase\JWT\JWT;
-use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
-use Hyperf\Utils\Str;
+use Firebase\JWT\JWT;
 use Hyperf\Config\Annotation\Value;
-use Hyperf\Config\Config;
+use Ramsey\Uuid\Uuid;
 
 class LoginRepository implements LoginRepositoryInterface
 {
-    #[Value(key: "jwt_secret_key")]
+    #[Value(key: 'jwt_secret_key')]
     protected $jwtSecretKey;
+
+    #[Value(key: 'defaultPermissions.founder_default_permissions')]
+    protected $defaultFounderPermissions;
 
     public function login($request)
     {
@@ -24,7 +34,7 @@ class LoginRepository implements LoginRepositoryInterface
 
         $user = $this->getUserByEmail($email);
 
-        if (!$user) {
+        if (! $user) {
             return ['error' => 'Usuário não encontrado'];
         }
 
@@ -33,21 +43,15 @@ class LoginRepository implements LoginRepositoryInterface
                 'uuid' => $user->uuid,
                 'email' => $user->email,
                 'name' => $user->name,
-                'permission' => unserialize($user->permission),
+                'user_type' => $user->user_type,
                 'iat' => time(),
             ];
 
             $token = JWT::encode($tokenPayload, $this->jwtSecretKey, 'HS256');
 
             return ['token' => $token];
-        } else {
-            return ['error' => 'Senha incorreta'];
         }
-    }
-
-    private function getUserByEmail($email)
-    {
-        return User::where('email', $email)->first();
+        return ['error' => 'Senha incorreta'];
     }
 
     public function register($request)
@@ -60,7 +64,8 @@ class LoginRepository implements LoginRepositoryInterface
             'discord' => $request->input('discord'),
             'email' => $request->input('email'),
             'linkedin' => $request->input('linkedin'),
-            'permission' => serialize(['founder']),
+            'user_type' => 'founder',
+            'permissions' => serialize($this->defaultFounderPermissions),
             'password' => password_hash($request->input('password'), PASSWORD_BCRYPT),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -70,5 +75,10 @@ class LoginRepository implements LoginRepositoryInterface
             return true;
         }
         return false;
+    }
+
+    private function getUserByEmail($email)
+    {
+        return User::where('email', $email)->first();
     }
 }
