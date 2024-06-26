@@ -34,7 +34,7 @@ final class UserController extends AbstractController
 
     public function index()
     {
-        return User::select(
+        $user = User::select(
             'uuid',
             'name',
             'cidade',
@@ -46,6 +46,12 @@ final class UserController extends AbstractController
             'created_at',
             'updated_at'
         )->get();
+
+        foreach ($user as $key => $value) {
+            $user[$key]['permissions'] = unserialize($value['permissions']);
+        }
+
+        return $this->response->json($user);
     }
 
     public function create(UserRegisterRequest $request)
