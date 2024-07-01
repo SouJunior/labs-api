@@ -47,10 +47,6 @@ final class UserController extends AbstractController
             'updated_at'
         )->get();
 
-        foreach ($user as $key => $value) {
-            $user[$key]['permissions'] = unserialize($value['permissions']);
-        }
-
         return $this->response->json($user);
     }
 
