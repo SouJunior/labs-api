@@ -26,6 +26,12 @@ final class UserController extends AbstractController
     #[Value(key: 'register_token')]
     private $registerToken;
 
+    #[Value(key: 'defaultPermissions.admin_default_permissions')]
+    private $defaultAdminPermissions;
+
+    #[Value(key: 'defaultPermissions.founder_default_permissions')]
+    private $defaultFounderPermissions;
+
     public function __construct(
         LoginRepository $loginRepository,
     ) {
@@ -116,6 +122,42 @@ final class UserController extends AbstractController
         ]);
     }
 
+    public function updateUserType(RequestInterface $request, $id)
+    {
+        $user = User::query()->where('uuid', $id)->first();
+
+        if (empty($user)) {
+            return $this->response->json([
+                'error' => 'Usuário não encontrado.',
+            ], 404);
+        }
+
+        if ($user->uuid !== $id) {
+            return $this->response->json([
+                'error' => 'Você não tem permissão para atualizar este usuário.',
+            ], 403);
+        }
+
+        $userType = $this->request->input('user_type');
+
+        $user->user_type = $userType;
+
+        if ($userType == 'founder') {
+            $user->permissions = serialize($this->defaultFounderPermissions);
+        }
+
+        if ($userType == 'admin') {
+            $user->permissions = serialize($this->defaultAdminPermissions);
+        }
+
+        $user->save();
+
+        return $this->response->json([
+            'message' => 'Tipo de usuário atualizado com sucesso!',
+            'user' => $user,
+        ]);
+    }
+
     public function del($id): Psr7ResponseInterface
     {
         $user = $this->container->get('user');
@@ -126,7 +168,7 @@ final class UserController extends AbstractController
             ], 403);
         }
 
-        if (! $id) {
+        if (!$id) {
             return $this->response->json([
                 'error' => 'O email é necessário para deletar o usuário.',
             ], 400);
@@ -134,7 +176,7 @@ final class UserController extends AbstractController
 
         $user = User::query()->where('uuid', $id)->first();
 
-        if (! $user) {
+        if (!$user) {
             return $this->response->json([
                 'error' => 'Usuário não encontrado.',
             ], 404);
@@ -147,7 +189,6 @@ final class UserController extends AbstractController
         ]);
     }
 
-    // user type - modificar
     public function permission(RequestInterface $request, $uuid)
     {
         $user = User::query()->where('uuid', $uuid)->first();
