@@ -1,0 +1,1 @@
+{"openapi":"3.0.0","paths":{"\/index":{"get":{"tags":["\/Index"],"summary":"GET example","operationId":"c7a3e07c42ef883719b986d0d3195666","responses":{"200":{"description":"Description of the returned value","content":{"application\/json":{"schema":[],"example":"{\"code\":200, \"data\":[]}"}}}}}}}}
