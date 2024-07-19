@@ -18,7 +18,6 @@ use App\Request\UserRegisterRequest;
 use Hyperf\Config\Annotation\Value;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
-use Symfony\Component\Console\Helper\Dumper;
 
 final class UserController extends AbstractController
 {
