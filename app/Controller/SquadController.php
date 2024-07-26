@@ -34,7 +34,19 @@ class SquadController extends AbstractController
 
     public function show($uuid): Psr7ResponseInterface
     {
+        $user = $this->container->get('user');
+
+
+        if(in_array('consultar_squad', unserialize($user->permissions)) === false ) {
+
+            return $this->response->json([
+                'error' => 'Você não tem permissão para visualizar essa squad.'
+                ],403
+            );
+        }
+
         $squad = Squad::where('uuid', $uuid)->first();
+        
 
         if (! $squad) {
             return $this->response->json(['error' => 'Squad not found'], 404);
@@ -45,6 +57,17 @@ class SquadController extends AbstractController
 
     public function create(): Psr7ResponseInterface
     {
+        $user = $this->container->get('user');
+
+
+        if(in_array('cadastrar_squad', unserialize($user->permmissions)) === false ) {
+
+            return $this->response->json([
+                    'error' => 'Você não tem permissão para criar essa squad.'
+                ],403
+            );
+        }
+
         $data = $this->request->getParsedBody();
         $squad = new Squad();
         $squad->fill($data);
@@ -60,6 +83,14 @@ class SquadController extends AbstractController
     public function update($uuid): Psr7ResponseInterface
     {
         $user = $this->container->get('user');
+
+        if(in_array('alterar_squad', unserialize($user->permissions)) === false ) {
+
+            return $this->response->json([
+                'error' => 'Você não tem permissão para alterar essa squad.'
+                ],403
+            );
+        }
 
         $squad = Squad::where('uuid', $uuid)->first();
 
@@ -96,7 +127,7 @@ class SquadController extends AbstractController
 
     public function delete($uuid)
     {
-        $user = $this->container->get('user');
+        $user = $this->container->get('user');        
 
         $squad = Squad::where('uuid', $uuid)->first();
 

@@ -24,8 +24,12 @@ class LoginRepository implements LoginRepositoryInterface
     #[Value(key: 'jwt_secret_key')]
     protected $jwtSecretKey;
 
+    #[Value(key: 'defaultPermissions.admin_default_permissions')]
+    private $defaultAdminPermissions;
+
     #[Value(key: 'defaultPermissions.founder_default_permissions')]
     protected $defaultFounderPermissions;
+    
 
     public function login($request)
     {

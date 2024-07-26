@@ -17,18 +17,31 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
 use Ramsey\Uuid\Uuid;
 
-class Member extends AbstractController
+class MemberController extends AbstractController
 {
     public function index($uuid): Psr7ResponseInterface
     {
-        $members = MemberModel::where(['squad_uuid' => $uuid])->get();
+        $user = $this->container->get('user');
+
+
+        if(in_array('consultar_squad', unserialize($user->permissions)) === false ) {
+
+            return $this->response->json([
+                'error' => 'Você não tem permissão para visualizar os membros dessa squad.'
+                ],403
+            );
+        }
+
+        $members = Member::where(['squad_uuid' => $uuid])->get();
+
         return $this->response->json($members);
     }
+
 
     public function create(): Psr7ResponseInterface
     {
         $data = $this->request->getParsedBody();
-        $member = new MemberModel();
+        $member = new Member();
         $member->fill($data);
         $member->uuid = Uuid::uuid4()->toString();
         $member->save();
@@ -41,7 +54,19 @@ class Member extends AbstractController
 
     public function update($uuid, $memberUuid): Psr7ResponseInterface
     {
-        $member = MemberModel::where(['squad_uuid' => $uuid, 'uuid' => $memberUuid])->first();
+        $user = $this->container->get('user');
+
+
+        if(in_array('alterar_squad', unserialize($user->permissions)) === false ) {
+
+            return $this->response->json([
+                'error' => 'Você não tem permissão para alterar os membros dessa squad.'
+                ],403
+            );
+        }
+
+
+        $member = Member::where(['squad_uuid' => $uuid, 'uuid' => $memberUuid])->first();
 
         if (! $member) {
             return $this->response->json(['error' => 'Member not found'], 404);
@@ -59,7 +84,19 @@ class Member extends AbstractController
 
     public function delete($uuid, $memberUuid): Psr7ResponseInterface
     {
-        $member = MemberModel::where(['uuid' => $memberUuid])->first();
+         $user = $this->container->get('user');
+
+
+        if(in_array('alterar_squad', unserialize($user->permissions)) === false ) {
+
+            return $this->response->json([
+                'error' => 'Você não tem permissão para deletar os membros dessa squad.'
+                ],403
+            );
+        }
+
+
+        $member = Member::where(['uuid' => $memberUuid])->first();
 
         if (! $member) {
             return $this->response->json(['error' => 'Member not found'], 404);

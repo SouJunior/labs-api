@@ -138,6 +138,12 @@ final class UserController extends AbstractController
             ], 403);
         }
 
+        if ($user->user_type !== 'admin') {
+            return $this->response->json([
+                'error' => 'Você não tem permissão para atualizar este usuário.',
+            ], 403);
+        }
+
         $userType = $this->request->input('user_type');
 
         $user->user_type = $userType;
