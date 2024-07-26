@@ -82,16 +82,6 @@ class SquadController extends AbstractController
 
     public function update($uuid): Psr7ResponseInterface
     {
-        $user = $this->container->get('user');
-
-        if(in_array('alterar_squad', unserialize($user->permissions)) === false ) {
-
-            return $this->response->json([
-                'error' => 'Você não tem permissão para alterar essa squad.'
-                ],403
-            );
-        }
-
         $squad = Squad::where('uuid', $uuid)->first();
 
         if (! $squad) {
@@ -107,7 +97,7 @@ class SquadController extends AbstractController
         if ($user->uuid !== $product->owner_uuid) {
             return $this->response->json(
                 [
-                    'error' => 'Você não tem permissão para autalizar este produto.',
+                    'error' => 'Você não tem permissão para atualizar este produto.',
                 ],
                 403
             );
@@ -144,7 +134,7 @@ class SquadController extends AbstractController
         if ($user->uuid !== $product->owner_uuid) {
             return $this->response->json(
                 [
-                    'error' => 'Você não tem permissão para autalizar este produto.',
+                    'error' => 'Você não tem permissão para atualizar este produto.',
                 ],
                 403
             );
