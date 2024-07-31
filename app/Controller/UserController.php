@@ -119,7 +119,7 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 
     public function updateUserType(RequestInterface $request, $id)
@@ -161,7 +161,7 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Tipo de usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 
     public function del($id): Psr7ResponseInterface
@@ -192,7 +192,7 @@ final class UserController extends AbstractController
 
         return $this->response->json([
             'message' => 'Usuário deletado com sucesso!',
-        ]);
+        ], 200);
     }
 
     public function permission(RequestInterface $request, $uuid)
@@ -223,6 +223,6 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 }

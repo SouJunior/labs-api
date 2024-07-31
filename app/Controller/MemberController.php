@@ -32,7 +32,7 @@ class MemberController extends AbstractController
             );
         }
 
-        $members = Member::where(['squad_uuid' => $uuid])->get();
+        $members = MemberModel::where(['squad_uuid' => $uuid])->get();
 
         return $this->response->json($members);
     }
@@ -41,7 +41,7 @@ class MemberController extends AbstractController
     public function create(): Psr7ResponseInterface
     {
         $data = $this->request->getParsedBody();
-        $member = new Member();
+        $member = new MemberModel();
         $member->fill($data);
         $member->uuid = Uuid::uuid4()->toString();
         $member->save();
@@ -66,7 +66,7 @@ class MemberController extends AbstractController
         }
 
 
-        $member = Member::where(['squad_uuid' => $uuid, 'uuid' => $memberUuid])->first();
+        $member = MemberModel::where(['squad_uuid' => $uuid, 'uuid' => $memberUuid])->first();
 
         if (! $member) {
             return $this->response->json(['error' => 'Member not found'], 404);
@@ -96,7 +96,7 @@ class MemberController extends AbstractController
         }
 
 
-        $member = Member::where(['uuid' => $memberUuid])->first();
+        $member = MemberModel::where(['uuid' => $memberUuid])->first();
 
         if (! $member) {
             return $this->response->json(['error' => 'Member not found'], 404);
