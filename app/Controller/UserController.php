@@ -219,4 +219,25 @@ final class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    public function alterUserPermission(RequestInterface $request, $uuid){
+
+        $user = User::query()->where('uuid', $uuid)->first();
+
+        if(empty($user)) {
+            return $this->response->json([
+                'error' => 'Usuário não encontrado.',
+                ], 404);
+        }
+
+        $user->permission = serialize($request->input('permissions'));
+        $user->save;
+
+        return $this->response->json([
+            'message' => 'Permissoes de usuário atualizadas com sucesso!',
+            'user' => $user,
+            'status' => 200
+        ],200);
+
+    }
 }
