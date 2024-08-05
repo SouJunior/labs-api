@@ -20,7 +20,7 @@ Router::addGroup(
         // user
         Router::addRoute(['GET'], '/users', 'App\Controller\UserController@index');
         Router::addRoute(['PUT'], '/user/{id}', 'App\Controller\UserController@update');
-        Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
+        Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@delete');
         Router::addRoute(['POST'], '/user/permission/{uuid}', 'App\Controller\UserController@permission');
         Router::addRoute(['PATCH'], '/user/type/{id}', 'App\Controller\UserController@updateUserType');
 

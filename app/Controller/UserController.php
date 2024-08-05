@@ -164,7 +164,7 @@ final class UserController extends AbstractController
         ], 200);
     }
 
-    public function del($id): Psr7ResponseInterface
+    public function delete($id): Psr7ResponseInterface
     {
         $user = $this->container->get('user');
 

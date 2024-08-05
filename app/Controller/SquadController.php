@@ -77,7 +77,7 @@ class SquadController extends AbstractController
         return $this->response->json([
             'message' => 'Squad created successfully!',
             'squad' => $squad,
-        ]);
+        ],200);
     }
 
     public function update($uuid): Psr7ResponseInterface
@@ -112,7 +112,7 @@ class SquadController extends AbstractController
         return $this->response->json([
             'message' => 'Squad updated successfully!',
             'squad' => $squad,
-        ]);
+        ],200);
     }
 
     public function delete($uuid)
