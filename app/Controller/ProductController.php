@@ -25,7 +25,7 @@ use App\Model\Product as ProductModel;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
 use Ramsey\Uuid\Uuid;
 
-final class Product extends AbstractController
+final class ProductController extends AbstractController
 {
     public function index($userUuid = false): Psr7ResponseInterface
     {
@@ -41,6 +41,15 @@ final class Product extends AbstractController
     public function create()
     {
         $user = $this->container->get('user');
+        
+
+        if(in_array('cadastrar_produto', unserialize($user->permissions)) === false ) {
+        
+            return $this->response->json([
+                    'error' => 'Você não tem permissão para criar este produto.'
+                ],403                
+            );
+        } 
 
         $name = $this->request->input('name');
         $description = $this->request->input('description');
@@ -61,7 +70,16 @@ final class Product extends AbstractController
 
     public function show($uuid): Psr7ResponseInterface
     {
+        $user = $this->container->get('user');
         $product = ProductModel::where('uuid', $uuid)->first();
+
+        if(in_array('consultar_produto', unserialize($user->permissions)) === false ) {
+        
+            return $this->response->json([
+                    'error' => 'Você não tem permissão para visualisar esse produto.'
+                ],403                
+            );
+        }        
 
         if (! $product) {
             return $this->response->json(['error' => 'Product not found'], 404);

@@ -20,17 +20,17 @@ Router::addGroup(
         // user
         Router::addRoute(['GET'], '/users', 'App\Controller\UserController@index');
         Router::addRoute(['PUT'], '/user/{id}', 'App\Controller\UserController@update');
-        Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@del');
+        Router::addRoute(['DELETE'], '/user/{id}', 'App\Controller\UserController@delete');
         Router::addRoute(['POST'], '/user/permission/{uuid}', 'App\Controller\UserController@permission');
         Router::addRoute(['PATCH'], '/user/alterPermissions/{uuid}', 'App\Controller\UserController@alterUserPermission');
         Router::addRoute(['PATCH'], '/user/type/{id}', 'App\Controller\UserController@updateUserType');
 
         // Product
-        Router::addRoute(['GET'], '/product/{uuid}', 'App\Controller\Product@show');
-        Router::addRoute(['POST'], '/product', 'App\Controller\Product@create');
-        Router::addRoute(['PUT'], '/product/{uuid}', 'App\Controller\Product@update');
-        Router::addRoute(['DELETE'], '/product/{uuid}', 'App\Controller\Product@delete');
-        Router::addRoute(['POST'], '/product/active/{uuid}', 'App\Controller\Product@active');
+        Router::addRoute(['GET'], '/product/{uuid}', 'App\Controller\ProductController@show');
+        Router::addRoute(['POST'], '/product', 'App\Controller\ProductController@create');
+        Router::addRoute(['PUT'], '/product/{uuid}', 'App\Controller\ProductController@update');
+        Router::addRoute(['DELETE'], '/product/{uuid}', 'App\Controller\ProductController@delete');
+        Router::addRoute(['POST'], '/product/active/{uuid}', 'App\Controller\ProductController@active');
 
         // Squad
         Router::addRoute(['GET'], '/squads/[{productUuid}]', 'App\Controller\SquadController@index');
@@ -40,11 +40,11 @@ Router::addGroup(
         Router::addRoute(['DELETE'], '/squad/{uuid}', 'App\Controller\SquadController@delete');
 
         // Member
-        Router::addRoute(['GET'], '/squad/{uuid}/members', 'App\Controller\Member@index');
-        Router::addRoute(['GET'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@show');
-        Router::addRoute(['POST'], '/squad/{uuid}/member', 'App\Controller\Member@create');
-        Router::addRoute(['PUT'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@update');
-        Router::addRoute(['DELETE'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\Member@delete');
+        Router::addRoute(['GET'], '/squad/{uuid}/members', 'App\Controller\MemberController@index');
+        Router::addRoute(['GET'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\MemberController@show');
+        Router::addRoute(['POST'], '/squad/{uuid}/member', 'App\Controller\MemberController@create');
+        Router::addRoute(['PUT'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\MemberController@update');
+        Router::addRoute(['DELETE'], '/squad/{uuid}/member/{memberUuid}', 'App\Controller\MemberController@delete');
     },
     ['middleware' => [AuthMiddleware::class]]
 );

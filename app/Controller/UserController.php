@@ -119,7 +119,7 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 
     public function updateUserType(RequestInterface $request, $id)
@@ -133,6 +133,12 @@ final class UserController extends AbstractController
         }
 
         if ($user->uuid !== $id) {
+            return $this->response->json([
+                'error' => 'Você não tem permissão para atualizar este usuário.',
+            ], 403);
+        }
+
+        if ($user->user_type !== 'admin') {
             return $this->response->json([
                 'error' => 'Você não tem permissão para atualizar este usuário.',
             ], 403);
@@ -155,10 +161,10 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Tipo de usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 
-    public function del($id): Psr7ResponseInterface
+    public function delete($id): Psr7ResponseInterface
     {
         $user = $this->container->get('user');
 
@@ -186,7 +192,7 @@ final class UserController extends AbstractController
 
         return $this->response->json([
             'message' => 'Usuário deletado com sucesso!',
-        ]);
+        ], 200);
     }
 
     public function permission(RequestInterface $request, $uuid)
@@ -217,7 +223,7 @@ final class UserController extends AbstractController
         return $this->response->json([
             'message' => 'Usuário atualizado com sucesso!',
             'user' => $user,
-        ]);
+        ], 200);
     }
 
     public function alterUserPermission(RequestInterface $request, $uuid){
